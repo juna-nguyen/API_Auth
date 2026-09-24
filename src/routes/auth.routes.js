@@ -1,13 +1,13 @@
-﻿import express from "express";
-import { authMiddleware } from "../middleware/auth.middleware.js";
-import { authorizeRoles } from "../middleware/role.middleware.js";
-import {
+﻿const express = require("express");
+const authMiddleware = require("../middleware/auth.middleware.js");
+const authorizeRoles = require("../middleware/role.middleware.js");
+const {
   register,
   login,
   getMe,
   changePassword,
   logout,
-} from "../controllers/auth.controller.js";
+} = require("../controllers/auth.controller.js");
 
 const router = express.Router();
 
@@ -322,4 +322,4 @@ router.get(
   },
 );
 
-export default router;
+module.exports = router;

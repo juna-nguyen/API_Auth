@@ -1,12 +1,14 @@
-﻿import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
-export const removePassword = (user) => {
+﻿const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model.js");
+
+const removePassword = (user) => {
   const data = user.toObject();
   delete data.password;
   return data;
 };
-export const register = async (req, res, next) => {
+
+const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
@@ -55,7 +57,8 @@ export const register = async (req, res, next) => {
     next(error);
   }
 };
-export const login = async (req, res, next) => {
+
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -111,7 +114,8 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
-export const getMe = async (req, res, next) => {
+
+const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.userId);
 
@@ -131,7 +135,8 @@ export const getMe = async (req, res, next) => {
     next(error);
   }
 };
-export const changePassword = async (req, res, next) => {
+
+const changePassword = async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body;
 
@@ -181,12 +186,15 @@ export const changePassword = async (req, res, next) => {
     next(error);
   }
 };
-export const logout = async (req, res) => {
+
+const logout = async (req, res) => {
   return res.status(200).json({
     message: "Đăng xuất thành công",
   });
 };
-export default {
+
+module.exports = {
+  removePassword,
   register,
   login,
   getMe,
