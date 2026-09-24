@@ -76,7 +76,6 @@ const forgotPassword = async (req, res, next) => {
 
     const user = await User.findOne({ email: email.trim().toLowerCase() });
 
-    // Không tiết lộ email có tồn tại hay không hoặc tài khoản đăng nhập bằng Google
     if (!user || user.authType === "google") {
       return res.status(200).json({ message });
     }
@@ -164,6 +163,90 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
+const googleLogin = async (req, res, next) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return res.status(400).json({
+        message: "idToken là bắt buộc",
+        error: "BadRequest",
+        statusCode: 400,
+      });
+    }
+
+    let decodedToken;
+    try {
+      decodedToken = await admin.auth().verifyIdToken(idToken);
+    } catch (err) {
+      if (err.code === "auth/id-token-expired") {
+        return res.status(401).json({
+          message: "Firebase ID Token đã hết hạn",
+          error: "Unauthorized",
+          statusCode: 401,
+        });
+      }
+      return res.status(401).json({
+        message: "Firebase ID Token không hợp lệ",
+        error: "Unauthorized",
+        statusCode: 401,
+      });
+    }
+
+    const { uid, email, name, picture } = decodedToken;
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Tài khoản Google không cung cấp email hợp lệ",
+        error: "BadRequest",
+        statusCode: 400,
+      });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    let user = await User.findOne({ email: normalizedEmail });
+
+    if (user) {
+      let updated = false;
+      if (!user.googleId) {
+        user.googleId = uid;
+        updated = true;
+      }
+      if (picture && user.avatar === "default.jpg") {
+        user.avatar = picture;
+        updated = true;
+      }
+      if (updated) {
+        await user.save();
+      }
+    } else {
+      user = await User.create({
+        name: name || normalizedEmail.split("@")[0],
+        email: normalizedEmail,
+        googleId: uid,
+        avatar: picture || "default.jpg",
+        authType: "google",
+        role: "user",
+      });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id.toString(), role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" },
+    );
+
+    return res.status(200).json({
+      message: "Đăng nhập Google thành công",
+      user: removePassword(user),
+      token,
+      expiresIn: "1d",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -175,89 +258,6 @@ const login = async (req, res, next) => {
         statusCode: 400,
       });
     }
-    const googleLogin = async (req, res, next) => {
-      try {
-        const { idToken } = req.body;
-
-        if (!idToken) {
-          return res.status(400).json({
-            message: "idToken là bắt buộc",
-            error: "BadRequest",
-            statusCode: 400,
-          });
-        }
-
-        let decodedToken;
-        try {
-          decodedToken = await admin.auth().verifyIdToken(idToken);
-        } catch (err) {
-          if (err.code === "auth/id-token-expired") {
-            return res.status(401).json({
-              message: "Firebase ID Token đã hết hạn",
-              error: "Unauthorized",
-              statusCode: 401,
-            });
-          }
-          return res.status(401).json({
-            message: "Firebase ID Token không hợp lệ",
-            error: "Unauthorized",
-            statusCode: 401,
-          });
-        }
-
-        const { uid, email, name, picture } = decodedToken;
-
-        if (!email) {
-          return res.status(400).json({
-            message: "Tài khoản Google không cung cấp email hợp lệ",
-            error: "BadRequest",
-            statusCode: 400,
-          });
-        }
-
-        const normalizedEmail = email.trim().toLowerCase();
-        let user = await User.findOne({ email: normalizedEmail });
-
-        if (user) {
-          let updated = false;
-          if (!user.googleId) {
-            user.googleId = uid;
-            updated = true;
-          }
-          if (picture && user.avatar === "default.jpg") {
-            user.avatar = picture;
-            updated = true;
-          }
-          if (updated) {
-            await user.save();
-          }
-        } else {
-          user = await User.create({
-            name: name || normalizedEmail.split("@")[0],
-            email: normalizedEmail,
-            googleId: uid,
-            avatar: picture || "default.jpg",
-            authType: "google",
-            role: "user",
-          });
-        }
-
-        const token = jwt.sign(
-          { userId: user._id.toString(), role: user.role },
-          process.env.JWT_SECRET,
-          { expiresIn: "1d" },
-        );
-
-        return res.status(200).json({
-          message: "Đăng nhập Google thành công",
-          user: removePassword(user),
-          token,
-          expiresIn: "1d",
-        });
-      } catch (error) {
-        next(error);
-      }
-    };
 
     const normalizedEmail = email.trim().toLowerCase();
     const user = await User.findOne({
