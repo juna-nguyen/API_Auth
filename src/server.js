@@ -1,11 +1,14 @@
 ﻿const express = require("express");
+const path = require("path");
 const dotenv = require("dotenv");
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
 const connectDB = require("./config/db.js");
 const authRoutes = require("./routes/auth.routes.js");
 const setupSwagger = require("./config/swagger.js");
 const cors = require("cors");
 
-dotenv.config();
 const app = express();
 
 app.use(express.json());
