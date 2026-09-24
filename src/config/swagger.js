@@ -1,5 +1,5 @@
-﻿import swaggerJsdoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
+﻿const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const swaggerOptions = {
   definition: {
@@ -116,7 +116,7 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-export const setupSwagger = (app) => {
+const setupSwagger = (app) => {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   app.get("/api-docs.json", (req, res) => {
     res.setHeader("Content-Type", "application/json");
@@ -124,4 +124,4 @@ export const setupSwagger = (app) => {
   });
 };
 
-export default setupSwagger;
+module.exports = setupSwagger;
