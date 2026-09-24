@@ -4,9 +4,11 @@ const authorizeRoles = require("../middleware/role.middleware.js");
 const {
   register,
   login,
+  googleLogin,
   getMe,
   changePassword,
   logout,
+  googleLogin,
 } = require("../controllers/auth.controller.js");
 
 const router = express.Router();
@@ -184,6 +186,7 @@ router.post("/login", login);
  *               error: "NotFound"
  *               statusCode: 404
  */
+router.post("/google-login", googleLogin);
 router.get("/me", authMiddleware, getMe);
 
 /**
