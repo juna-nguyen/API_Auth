@@ -13,8 +13,10 @@ connectDB();
 
 const allowedOrigins = [
   "http://localhost:3002",
-  // Vercel frontend
-  "https://fe-crud-user-omega.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:5174",
+
+  "https://fe-auth-omega.vercel.app",
 ];
 
 app.use(
@@ -32,9 +34,7 @@ app.use(
     },
 
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-
     allowedHeaders: ["Content-Type", "Authorization"],
-
     credentials: true,
   }),
 );
