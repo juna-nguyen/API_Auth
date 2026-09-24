@@ -1,0 +1,40 @@
+POST http://localhost:3001/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "thao",
+  "email": "thao@example.com",
+  "password": "123456"
+}    
+
+###
+# login
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "thao@example.com",
+  "password": "123456"
+}
+
+###
+GET http://localhost:3001/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWFiZjJlMWQxMTk0OTAyOTFlZjVmZDMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc4OTY1NTYxNywiZXhwIjoxNzg5NzQyMDE3fQ.hwYyfXF_nPe0kHewln8khfeUAJTjtkVljA1oPX-tf88
+
+###
+PUT http://localhost:3001/api/auth/change-password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWFiZjJlMWQxMTk0OTAyOTFlZjVmZDMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc4OTY1NTYxNywiZXhwIjoxNzg5NzQyMDE3fQ.hwYyfXF_nPe0kHewln8khfeUAJTjtkVljA1oPX-tf88
+Content-Type: application/json
+
+{
+  "oldPassword": "123456",
+  "newPassword": "new123456"
+}
+
+### Đăng xuất
+POST http://localhost:3001/api/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWFiZjJlMWQxMTk0OTAyOTFlZjVmZDMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc4OTY1NTYxNywiZXhwIjoxNzg5NzQyMDE3fQ.hwYyfXF_nPe0kHewln8khfeUAJTjtkVljA1oPX-tf88
+
+### Test Admin Route
+GET http://localhost:3001/api/auth/admin/dashboard
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWFiZjJlMWQxMTk0OTAyOTFlZjVmZDMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc4OTY1NTYxNywiZXhwIjoxNzg5NzQyMDE3fQ.hwYyfXF_nPe0kHewln8khfeUAJTjtkVljA1oPX-tf88
