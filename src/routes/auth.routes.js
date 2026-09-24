@@ -4,11 +4,12 @@ const authorizeRoles = require("../middleware/role.middleware.js");
 const {
   register,
   login,
-  googleLogin,
   getMe,
   changePassword,
   logout,
   googleLogin,
+  forgotPassword,
+  resetPassword,
 } = require("../controllers/auth.controller.js");
 
 const router = express.Router();
@@ -188,7 +189,8 @@ router.post("/login", login);
  */
 router.post("/google-login", googleLogin);
 router.get("/me", authMiddleware, getMe);
-
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 /**
  * @swagger
  * /api/auth/change-password:
