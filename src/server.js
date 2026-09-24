@@ -13,29 +13,23 @@ connectDB();
 
 const allowedOrigins = [
   "http://localhost:3002",
-  "http://localhost:5173",
-  "http://localhost:5174",
 
-  "https://fe-auth-omega.vercel.app",
+  "https://fe-auth-ngoctramnek.vercel.app",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) {
-        return callback(null, true);
+      // Cho phép request không có origin (như Postman hoặc mobile app) hoặc nằm trong danh sách cho phép
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
       }
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("Not allowed by CORS"));
     },
-
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
