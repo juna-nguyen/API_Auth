@@ -1,9 +1,9 @@
-﻿import express from "express";
-import dotenv from "dotenv";
-import connectDB from "./config/db.js";
-import authRoutes from "./routes/auth.routes.js";
-import setupSwagger from "./config/swagger.js";
-import cors from "cors";
+﻿const express = require("express");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db.js");
+const authRoutes = require("./routes/auth.routes.js");
+const setupSwagger = require("./config/swagger.js");
+const cors = require("cors");
 
 dotenv.config();
 const app = express();
@@ -20,7 +20,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Cho phép request không có Origin (Postman, Swagger, server-to-server)
       if (!origin) {
         return callback(null, true);
       }
@@ -40,7 +39,6 @@ app.use(
   }),
 );
 
-// Swagger Documentation Route
 setupSwagger(app);
 
 // API Routes
@@ -58,5 +56,7 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () =>
-  console.log(`Server running at http://localhost:${PORT}\nSwagger docs available at http://localhost:${PORT}/api-docs`),
+  console.log(
+    `Server running at http://localhost:${PORT}\nSwagger docs available at http://localhost:${PORT}/api-docs`,
+  ),
 );
