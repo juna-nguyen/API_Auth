@@ -15,6 +15,10 @@ const swaggerOptions = {
         url: "/",
         description: "Development Server (Local)",
       },
+      {
+        url: "https://api-auth-sjc4.onrender.com",
+        description: "Production Server (Render)",
+      },
     ],
     components: {
       securitySchemes: {
