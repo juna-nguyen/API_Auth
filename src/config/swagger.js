@@ -12,7 +12,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:3001",
+        url: "/",
         description: "Development Server (Local)",
       },
     ],
@@ -31,7 +31,11 @@ const swaggerOptions = {
           properties: {
             _id: { type: "string", example: "6790a1b2c3d4e5f6a7b8c9d0" },
             name: { type: "string", example: "Nguyen Van A" },
-            email: { type: "string", format: "email", example: "user@example.com" },
+            email: {
+              type: "string",
+              format: "email",
+              example: "user@example.com",
+            },
             role: { type: "string", enum: ["user", "admin"], example: "user" },
             createdAt: {
               type: "string",
@@ -50,7 +54,11 @@ const swaggerOptions = {
           required: ["name", "email", "password"],
           properties: {
             name: { type: "string", example: "Nguyen Van A" },
-            email: { type: "string", format: "email", example: "user@example.com" },
+            email: {
+              type: "string",
+              format: "email",
+              example: "user@example.com",
+            },
             password: {
               type: "string",
               format: "password",
@@ -63,7 +71,11 @@ const swaggerOptions = {
           type: "object",
           required: ["email", "password"],
           properties: {
-            email: { type: "string", format: "email", example: "user@example.com" },
+            email: {
+              type: "string",
+              format: "email",
+              example: "user@example.com",
+            },
             password: { type: "string", format: "password", example: "123456" },
           },
         },
@@ -71,7 +83,11 @@ const swaggerOptions = {
           type: "object",
           required: ["oldPassword", "newPassword"],
           properties: {
-            oldPassword: { type: "string", format: "password", example: "123456" },
+            oldPassword: {
+              type: "string",
+              format: "password",
+              example: "123456",
+            },
             newPassword: {
               type: "string",
               format: "password",
