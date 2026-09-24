@@ -1,7 +1,8 @@
-import express from "express";
+﻿import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import all from "./routes/auth.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import setupSwagger from "./config/swagger.js";
 import cors from "cors";
 
 dotenv.config();
@@ -12,7 +13,6 @@ connectDB();
 
 const allowedOrigins = [
   "http://localhost:3002",
-
   // Vercel frontend
   "https://fe-crud-user-omega.vercel.app",
 ];
@@ -20,8 +20,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Cho phép request không có Origin
-      // Ví dụ: Postman, Swagger, server-to-server
+      // Cho phép request không có Origin (Postman, Swagger, server-to-server)
       if (!origin) {
         return callback(null, true);
       }
@@ -41,9 +40,23 @@ app.use(
   }),
 );
 
-app.use("/api/auth", all);
+// Swagger Documentation Route
+setupSwagger(app);
+
+// API Routes
+app.use("/api/auth", authRoutes);
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.statusCode || 500).json({
+    message: err.message || "Lỗi Server Nội Bộ",
+    error: err.name || "ServerError",
+    statusCode: err.statusCode || 500,
+  });
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () =>
-  console.log(`Server running at http://localhost:${PORT}`),
+  console.log(`Server running at http://localhost:${PORT}\nSwagger docs available at http://localhost:${PORT}/api-docs`),
 );

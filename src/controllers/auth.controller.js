@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+﻿import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 export const removePassword = (user) => {
@@ -181,7 +181,7 @@ export const changePassword = async (req, res, next) => {
     next(error);
   }
 };
-const logout = async (req, res) => {
+export const logout = async (req, res) => {
   return res.status(200).json({
     message: "Đăng xuất thành công",
   });
