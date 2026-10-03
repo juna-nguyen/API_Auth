@@ -175,10 +175,24 @@ const googleLogin = async (req, res, next) => {
       });
     }
 
+    // Đây phải là Firebase ID token (JWT), lấy từ user.getIdToken().
+    // Google OAuth accessToken không thể được verify bằng Firebase Admin SDK.
+    if (typeof idToken !== "string" || idToken.split(".").length !== 3) {
+      return res.status(401).json({
+        message: "idToken phải là Firebase ID token hợp lệ",
+        error: "Unauthorized",
+        statusCode: 401,
+      });
+    }
+
     let decodedToken;
     try {
       decodedToken = await admin.auth().verifyIdToken(idToken);
     } catch (err) {
+      console.error(
+        "[Firebase] verifyIdToken failed:",
+        err.code || err.message,
+      );
       if (err.code === "auth/id-token-expired") {
         return res.status(401).json({
           message: "Firebase ID Token đã hết hạn",
