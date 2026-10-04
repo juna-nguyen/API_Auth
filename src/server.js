@@ -16,6 +16,7 @@ connectDB();
 
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:3001",
 
   "https://fe-auth-ngoctramnek.vercel.app",
 ];
