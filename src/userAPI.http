@@ -2,8 +2,8 @@ POST http://localhost:3001/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "thao",
-  "email": "thao@example.com",
+  "name": "tram",
+  "email": "hanthanhvan4@gmail.com",
   "password": "123456"
 }    
 
@@ -13,7 +13,7 @@ POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "thao@example.com",
+  "email": "hanthanhvan4@gmail.com",
   "password": "123456"
 }
 
@@ -44,7 +44,7 @@ POST http://localhost:3001/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": "user@example.com"
+  "email": "hanthanhvan4@gmail.com"
 }
 
 ### Đặt lại mật khẩu: lấy raw token từ email, không phải hash trong MongoDB
@@ -52,6 +52,6 @@ POST http://localhost:3001/api/auth/reset-password
 Content-Type: application/json
 
 {
-  "token": "PASTE_RAW_TOKEN_FROM_EMAIL",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWMyMTM4ZGFkYTYxODE2ZWMxNmUzODIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc5MTEwMzg5MiwiZXhwIjoxNzkxMTkwMjkyfQ.6AhUZZtxcGzldboyI2zNXvOVKBDbK33W9e3Of1KBjR4",
   "newPassword": "new-password-123"
 }

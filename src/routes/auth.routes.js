@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const authMiddleware = require("../middleware/auth.middleware.js");
 const authorizeRoles = require("../middleware/role.middleware.js");
 const {
@@ -189,7 +189,97 @@ router.post("/login", login);
  */
 router.post("/google-login", googleLogin);
 router.get("/me", authMiddleware, getMe);
+/**
+ * @swagger
+ * /api/auth/forgot-password:
+ *   post:
+ *     summary: Yêu cầu đặt lại mật khẩu qua email
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ForgotPasswordRequest'
+ *     responses:
+ *       200:
+ *         description: Thông báo đã gửi email hướng dẫn (kể cả khi email không tồn tại vì lý do bảo mật)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Nếu email tồn tại, hướng dẫn đặt lại mật khẩu đã được gửi"
+ *       400:
+ *         description: Thiếu thông tin email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               message: "Email là bắt buộc"
+ *               error: "BadRequest"
+ *               statusCode: 400
+ *       500:
+ *         description: Lỗi máy chủ hoặc lỗi gửi mail qua SMTP
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.post("/forgot-password", forgotPassword);
+
+/**
+ * @swagger
+ * /api/auth/reset-password:
+ *   post:
+ *     summary: Đặt lại mật khẩu mới bằng token
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ResetPasswordRequest'
+ *     responses:
+ *       200:
+ *         description: Đặt lại mật khẩu thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Đặt lại mật khẩu thành công"
+ *       400:
+ *         description: Dữ liệu gửi lên không hợp lệ, mật khẩu quá ngắn hoặc token không hợp lệ / hết hạn
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             examples:
+ *               missingFields:
+ *                 summary: Thiếu token hoặc mật khẩu mới
+ *                 value:
+ *                   message: "token và newPassword là bắt buộc"
+ *                   error: "BadRequest"
+ *                   statusCode: 400
+ *               shortPassword:
+ *                 summary: Mật khẩu mới quá ngắn
+ *                 value:
+ *                   message: "Password mới phải có ít nhất 6 ký tự"
+ *                   error: "BadRequest"
+ *                   statusCode: 400
+ *               invalidOrExpiredToken:
+ *                 summary: Token không hợp lệ hoặc đã hết hạn
+ *                 value:
+ *                   message: "Token đặt lại mật khẩu không hợp lệ hoặc đã hết hạn"
+ *                   error: "BadRequest"
+ *                   statusCode: 400
+ */
 router.post("/reset-password", resetPassword);
 /**
  * @swagger

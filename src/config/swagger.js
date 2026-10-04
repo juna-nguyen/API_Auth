@@ -1,4 +1,4 @@
-﻿const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
 const swaggerOptions = {
@@ -91,6 +91,34 @@ const swaggerOptions = {
               type: "string",
               format: "password",
               example: "123456",
+            },
+            newPassword: {
+              type: "string",
+              format: "password",
+              minLength: 6,
+              example: "newPassword123",
+            },
+          },
+        },
+        ForgotPasswordRequest: {
+          type: "object",
+          required: ["email"],
+          properties: {
+            email: {
+              type: "string",
+              format: "email",
+              example: "user@example.com",
+            },
+          },
+        },
+        ResetPasswordRequest: {
+          type: "object",
+          required: ["token", "newPassword"],
+          properties: {
+            token: {
+              type: "string",
+              description: "Token đặt lại mật khẩu nhận được qua email",
+              example: "4a2b9f3e8c1d7a5b6e0f2c4d8a1e3b5c7f9a0b2d4e6f8a1c3e5b7d9f0a2c4e6",
             },
             newPassword: {
               type: "string",
