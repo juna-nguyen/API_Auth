@@ -38,3 +38,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWFiZ
 ### Test Admin Route
 GET http://localhost:3001/api/auth/admin/dashboard
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWFiZjJlMWQxMTk0OTAyOTFlZjVmZDMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc4OTY1NTYxNywiZXhwIjoxNzg5NzQyMDE3fQ.hwYyfXF_nPe0kHewln8khfeUAJTjtkVljA1oPX-tf88
+
+### Quên mật khẩu: luôn mong đợi 200 với email hợp lệ/không tồn tại
+POST http://localhost:3001/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "user@example.com"
+}
+
+### Đặt lại mật khẩu: lấy raw token từ email, không phải hash trong MongoDB
+POST http://localhost:3001/api/auth/reset-password
+Content-Type: application/json
+
+{
+  "token": "PASTE_RAW_TOKEN_FROM_EMAIL",
+  "newPassword": "new-password-123"
+}
