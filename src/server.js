@@ -15,7 +15,7 @@ app.use(express.json());
 connectDB();
 
 const allowedOrigins = [
-  "http://localhost:3002",
+  "http://localhost:3000",
 
   "https://fe-auth-ngoctramnek.vercel.app",
 ];

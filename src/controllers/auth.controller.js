@@ -1,7 +1,7 @@
-﻿const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model.js");
-const admin = require("../config/firebase");
+const firebaseAuth = require("../config/firebase");
 const crypto = require("crypto");
 const { sendPasswordResetEmail } = require("../config/mailer");
 
@@ -187,7 +187,7 @@ const googleLogin = async (req, res, next) => {
 
     let decodedToken;
     try {
-      decodedToken = await admin.auth().verifyIdToken(idToken);
+      decodedToken = await firebaseAuth.verifyIdToken(idToken);
     } catch (err) {
       console.error(
         "[Firebase] verifyIdToken failed:",
